@@ -11,7 +11,7 @@ const Form = ({activeQuiz, quizes, changeAnswer, isFinished, nextQuiz, sendAnswe
         <ProgressBar quizesLength={quizes.length} currentQuiz={activeQuiz}/>
       </div>
       <div className={`${classes.form__progress} ${classes.form__quiz}`}>
-        {renderQuiz(activeQuiz, quizes.slice(0), changeAnswer, isFinished, sendAnswers, inputChangeAnswer)}
+        {quiz(activeQuiz, quizes.slice(0), changeAnswer, isFinished, sendAnswers, inputChangeAnswer)}
       </div>
       {nextButton(isFinished, nextQuiz, sendedAnswers)}
     </div>
@@ -32,7 +32,7 @@ const nextButton = (isFinished, nextQuiz, sendedAnswers) => {
   )
 }
 
-function renderQuiz(activeQuiz, quizes, changeAnswer, isFinished, sendAnswers, inputChangeAnswer) {
+function quiz(activeQuiz, quizes, changeAnswer, isFinished, sendAnswers, inputChangeAnswer) {
   if(isFinished) {
     return sendAnswer(sendAnswers.answers, sendAnswers.answer, sendAnswer.inputAnswer, changeAnswer, inputChangeAnswer)
   }
@@ -40,12 +40,11 @@ function renderQuiz(activeQuiz, quizes, changeAnswer, isFinished, sendAnswers, i
 
   return (
     <>
-
       <div className={classes.form__quiz__number}>Вопрос {activeQuiz + 1}</div>
 
       <div className={classes.form__quiz__question}>{question}</div>
       
-      {renderQuizAnswer(answers, placeholder, activeQuiz, answer, changeAnswer)}
+      {quizAnswer(answers, placeholder, activeQuiz, answer, changeAnswer)}
     </>
   )
 
@@ -55,46 +54,44 @@ function sendAnswer(answers, answer, inputAnswer, changeAnswer, inputChangeAnswe
   
   return (
     <>
-      
       <div className={classes.form__quiz__question}><span>Куда прислать вам ответ?</span></div>
 
       <div className={classes.form__quiz__sendAnswer}>
-        {answers.map(item => answerItem(item.title, answer.title === item.title, changeAnswer))}
+        {answers.map(item => <AnswerItem title={item.title} isActive={answer.title === item.title} changeAnswer={changeAnswer} key={item.id}/> )}
       </div>
 
       <div className={classes.inputMask}>
         <p className={classes.inputMask__text}>Ввведите ваш {answer.type === 'phone' ? 'номер телефона' : 'e-mail'}</p>
         {answer.type === 'phone' ? <InputMask inputChangeAnswer={inputChangeAnswer} /> : <input type="text" className={classes.inputMask__input} placeholder="simple@example.com"/>}
-
       </div>
     </>
   )
 }
 
-function renderQuizAnswer(answers, placeholder, activeQuiz, answer, changeAnswer) {
+function quizAnswer(answers, placeholder, activeQuiz, answer, changeAnswer) {
   if(answers === undefined) {
-    console.log(`answer`, answer)
     return <input className={classes.form__quiz__input} value={answer} onChange={(e) => changeAnswer(e.target.value)} placeholder={placeholder} type="number"/>
   }
 
   return (
     <div className={classes.form__quiz__answers}>
-      {answers.map(title => answerItem(title, answer === title, changeAnswer))}
+      {answers.map(title => <AnswerItem title={title} isActive={answer === title} changeAnswer={changeAnswer} key={title} />)}
     </div>
   )
 }
 
-function answerItem(title, isActive, changeAnswer) {
+function AnswerItem({title, isActive, changeAnswer}) {
   return (
     <div className={classes.form__quiz__answers__item} onClick={() => changeAnswer(title)}>
-      {renderListType(isActive)}
+      {listType(isActive)}
       <p className={classes.form__quiz__answers__item__text}>{title}</p>
     </div>
   )
 }
 
-function renderListType(isActive) {
+function listType(isActive) {
   const listClasses = isActive ? classes.form__listType__active : classes.form__listType__unActive;
+
   return (
     <div className={classes.form__listType}>
       <div className={listClasses}></div>

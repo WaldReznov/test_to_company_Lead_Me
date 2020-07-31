@@ -1,20 +1,17 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 import classes from './ProgressBar.module.scss'
 
 function ProgressBar({quizesLength, currentQuiz}) {
-  console.log(`quizesLength`, quizesLength)
-  console.log(`currentQuiz`, currentQuiz)
   const quizes = Array(quizesLength).fill(1).map((item, index) => {
     return (
-      <>
+      <Fragment key={index}>
         {circle(currentQuiz >= index)}
         {quizesLength > index + 1 ? progressDiv(currentQuiz > index) : null}
-      </>
+      </Fragment>
     )
   })
-  return (
-    quizes
-  )
+
+  return quizes;
 }
 
 function circle(isActive) {

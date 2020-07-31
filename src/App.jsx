@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import logo from './assets/images/logo.svg';
-import listType from './assets/images/list-type.svg';
 import bush from './assets/images/Bush.png';
 import cow from './assets/images/Group 271.png';
 import classes from './App.module.scss';
@@ -9,69 +8,88 @@ import Facts from './components/Facts/Facts';
 
 class App extends Component {
 
+  uuid = () => ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15 >> c/4).toString(16));
+
   state = {
     activeQuiz: 0,
     isFinished: false,
     quizes: [
       {
+        id: (this.uuid()),
         question: <>Сколько у вас <span>дойных коров?</span></>,
         answer: '',
         placeholder: 'Например: 45'
       },
       {
+        id: (this.uuid()),
         question: <>Сколько <span>молока в сутки вы доите?</span></>,
         answer: '',
         placeholder: 'Например: 45'
       },
       {
+        id: (this.uuid()),
         question: <><span>Вы являетесь?</span></>,
         answers: ['Руководителем фермы', 'Зоотехником', 'Ветеренаром'],
         answer: 'Руководителем фермы'
       }
     ],
-    sendAnswers: {
+    sendAnswers: null,
+    answerSended: false
+  }
+
+  componentDidMount() {
+    const sendAnswers = {
       question: <><span>Куда прислать вам ответ?</span></>,
-      answer: {
-        title: 'По телефону',
-        type: 'phone'
-      },
+      answer: null,
       inputAnswer: '',
       answers: [
         {
+          id: (this.uuid()),
           title: 'По телефону',
           type: 'phone'
         },
         {
+          id: (this.uuid()),
           title: 'E-mail',
           type: 'email'
         },
         {
+          id: (this.uuid()),
           title: 'Viber',
           type: 'phone'
         },
         {
+          id: (this.uuid()),
           title: 'Telegram',
           type: 'phone'
         },
         {
+          id: (this.uuid()),
           title: 'Whatsaap',
           type: 'phone'
         }
       ]
-    },
-    answerSended: false
+    }
+    sendAnswers.answer = sendAnswers.answers[0];
+    
+    this.setState({
+      sendAnswers
+    })
   }
 
   facts = [
     {
+      id: (this.uuid()),
       title: <>Своевременного <br/> определения половой охоты</>,
       subtitle: <>особенно если она не заметна <br/> по внешним признакам</>
     },
     {
+      id: (this.uuid()),
       title: <>Анализом состояния <br/> здоровья коровы</>,
       subtitle: <>при наблюдении за жвачкой, <br/> активностью и температурой тела</>
     },
     {
+      id: (this.uuid()),
       title: <>Выявление хромоты</>,
       subtitle: <>предупреждением <br/> и выявлением развития <br/> хромоты</>
     }
@@ -130,6 +148,7 @@ class App extends Component {
   } 
 
   inputChangeAnswer = (text) => {
+    console.log(this.state)
     const sendAnswers = JSON.parse(JSON.stringify(this.state.sendAnswers));
     sendAnswers.inputAnswer = text;
     this.setState({

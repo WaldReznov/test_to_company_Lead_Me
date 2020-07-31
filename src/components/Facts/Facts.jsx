@@ -5,12 +5,12 @@ import listType from '../../assets/images/list-type.svg';
 const Facts = ({facts}) => {
   return (
     <div className={classes.facts}>
-      {facts.map(item => fact(item))}
+      {facts.map(fact => <Fact {...fact} key={fact.id}/>)}
     </div>
   )
 }
 
-const fact = ({title, subtitle}) => {
+const Fact = ({title, subtitle}) => {
   return (
     <div className={classes.facts__item}>
       <img src={listType} className={classes.facts__item__img} alt=""/>
