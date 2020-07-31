@@ -1,12 +1,12 @@
-@import './assets/fonts/Gilroy-Regular/style.scss';
-@import './assets/fonts/Gilroy-Medium/style.scss';
-@import './assets/fonts/Gilroy-Bold/style.scss';
-@import './assets/fonts/Gilroy-Extrabold/style.scss';
-@import './assets/fonts/Gilroy-Light/style.scss';
-@import './assets/fonts/Gilroy-Semibold/style.scss';
+@import '../../assets/fonts/Gilroy-Regular/style.scss';
+@import '../../assets/fonts/Gilroy-Medium/style.scss';
+@import '../../assets/fonts/Gilroy-Bold/style.scss';
+@import '../../assets/fonts/Gilroy-Extrabold/style.scss';
+@import '../../assets/fonts/Gilroy-Light/style.scss';
+@import '../../assets/fonts/Gilroy-Semibold/style.scss';
 
 .main {
-  background-image: url('./assets/images/image 150.png');
+  background-image: url('../../assets/images/image 150.png');
   // background-size: cover;
   position: relative;
   
@@ -24,7 +24,7 @@
   &__content {
     position: relative;
     z-index: 2;
-    background-image: url('./assets/images/Group 382.png');
+    background-image: url('../../assets/images/Group 384.png');
     background-repeat: no-repeat;
     // background-size: contain;
     height: 1024px;

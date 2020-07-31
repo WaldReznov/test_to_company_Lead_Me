@@ -16,6 +16,7 @@ function ProgressBar({quizesLength, currentQuiz}) {
 
 function circle(isActive) {
   const circleClass = `${classes.progress__circle} ${isActive ? classes.progress__circle__active : classes.progress__circle__unActive}`
+  
   return (
     <div className={classes.circle__background}>
       <div className={circleClass}></div>

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import logo from './assets/images/logo.svg';
-import bush from './assets/images/Bush.png';
-import cow from './assets/images/Group 271.png';
+import logo from '../../assets/images/logo.svg';
+import bush from '../../assets/images/Bush.png';
+import cow from '../../assets/images/Group 271.png';
 import classes from './App.module.scss';
-import Form from './components/Form/Form.jsx'
-import Facts from './components/Facts/Facts';
+import Form from '../Form/Form.jsx'
+import Facts from '../Facts/Facts';
 
 class App extends Component {
 
@@ -100,6 +100,8 @@ class App extends Component {
       this.setState({
         answerSended: true
       })
+
+      alert('Мы выслали вам ответ')
     } else {
       alert('Введите корректные данные')
     }
@@ -121,40 +123,40 @@ class App extends Component {
   }
 
   changeAnswer = (text) => {
-    const isFinished = this.state.isFinished;
-    if(isFinished) {
-      const answer = this.state.sendAnswers.answers.slice(0).find(item => item.title === text);
-      const sendAnswers = JSON.parse(JSON.stringify(this.state.sendAnswers));
-      sendAnswers.answer = answer;
-      this.setState((prev) => {
-        if (prev.sendAnswers.answer.type === sendAnswers.answer.type) {
-          return {
-            sendAnswers
-          }
-        }
-        sendAnswers.inputAnswer = '';
+    const quizes = this.state.quizes.slice(0);
+    const activeQuiz = this.state.activeQuiz;
+    quizes[activeQuiz]['answer'] = text;
+    this.setState({
+      quizes
+    })
+  } 
+
+  changeSendAnswers = (text) => {
+    const sendAnswers = JSON.parse(JSON.stringify(this.state.sendAnswers));
+    const answer = sendAnswers.answers.slice(0).find(item => item.title === text);
+    sendAnswers.answer = answer;
+    this.setState((prev) => {
+      if (prev.sendAnswers.answer.type === sendAnswers.answer.type) {
         return {
           sendAnswers
         }
-      })
-    } else {
-      const quizes = this.state.quizes.slice(0);
-      const activeQuiz = this.state.activeQuiz;
-      quizes[activeQuiz]['answer'] = text;
-      this.setState({
-        quizes
-      })
-    }
-  } 
+      }
+
+      sendAnswers.inputAnswer = '';
+
+      return {
+        sendAnswers
+      }
+    })
+  }
 
   inputChangeAnswer = (text) => {
-    console.log(this.state)
     const sendAnswers = JSON.parse(JSON.stringify(this.state.sendAnswers));
     sendAnswers.inputAnswer = text;
+
     this.setState({
       sendAnswers
     })
-
   }
 
   nextQuiz = () => {
@@ -191,7 +193,16 @@ class App extends Component {
   
           <Facts facts={this.facts} />
   
-          <Form sendedAnswers={this.sendedAnswers} activeQuiz={this.state.activeQuiz} quizes={this.state.quizes} changeAnswer={this.changeAnswer} isFinished={this.state.isFinished} nextQuiz={this.nextQuiz} sendAnswers={this.state.sendAnswers} inputChangeAnswer={this.inputChangeAnswer}/>
+          <Form 
+            sendedAnswers={this.sendedAnswers} 
+            activeQuiz={this.state.activeQuiz} 
+            quizes={this.state.quizes} 
+            changeAnswer={this.changeAnswer} 
+            isFinished={this.state.isFinished} 
+            nextQuiz={this.nextQuiz} 
+            sendAnswers={this.state.sendAnswers} 
+            inputChangeAnswer={this.inputChangeAnswer} 
+            changeSendAnswers={this.changeSendAnswers}/>
 
         </div>
       </main>

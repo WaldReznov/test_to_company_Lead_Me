@@ -4,22 +4,39 @@ import classes from './Form.module.scss';
 import InputMask from '../InputMask/InputMask';
 import ProgressBar from '../ProgressBar/ProgressBar';
 
-const Form = ({activeQuiz, quizes, changeAnswer, isFinished, nextQuiz, sendAnswers, inputChangeAnswer, sendedAnswers}) => {
+const Form = ({
+  activeQuiz, 
+  quizes, 
+  changeAnswer, 
+  isFinished, 
+  nextQuiz, 
+  sendAnswers, 
+  inputChangeAnswer, 
+  sendedAnswers, 
+  changeSendAnswers
+}) => {
   return (
     <div className={classes.form}>
       <div className={classes.form__progress}>
         <ProgressBar quizesLength={quizes.length} currentQuiz={activeQuiz}/>
       </div>
       <div className={`${classes.form__progress} ${classes.form__quiz}`}>
-        {quiz(activeQuiz, quizes.slice(0), changeAnswer, isFinished, sendAnswers, inputChangeAnswer)}
+        {quiz(
+          activeQuiz, 
+          quizes.slice(0), 
+          changeAnswer, isFinished, 
+          sendAnswers, 
+          inputChangeAnswer, 
+          changeSendAnswers
+        )}
       </div>
-      {nextButton(isFinished, nextQuiz, sendedAnswers)}
+      <NextButton isFinished={isFinished} nextQuiz={nextQuiz} sendedAnswers={sendedAnswers} />
     </div>
   )
 }
 
 
-const nextButton = (isFinished, nextQuiz, sendedAnswers) => {
+const NextButton = ({isFinished, nextQuiz, sendedAnswers}) => {
 
   return (
     <div className={isFinished ? classes.nextButton__finished : classes.nextButton} onClick={isFinished ? sendedAnswers : nextQuiz}>
@@ -32,9 +49,14 @@ const nextButton = (isFinished, nextQuiz, sendedAnswers) => {
   )
 }
 
-function quiz(activeQuiz, quizes, changeAnswer, isFinished, sendAnswers, inputChangeAnswer) {
+function quiz(activeQuiz, quizes, changeAnswer, isFinished, sendAnswers, inputChangeAnswer, changeSendAnswers) {
   if(isFinished) {
-    return sendAnswer(sendAnswers.answers, sendAnswers.answer, sendAnswer.inputAnswer, changeAnswer, inputChangeAnswer)
+    return sendAnswer(
+      sendAnswers.answers, 
+      sendAnswers.answer, 
+      inputChangeAnswer, 
+      changeSendAnswers
+      )
   }
   const {question, placeholder, answers, answer} = quizes[activeQuiz];
 
@@ -50,19 +72,19 @@ function quiz(activeQuiz, quizes, changeAnswer, isFinished, sendAnswers, inputCh
 
 }
 
-function sendAnswer(answers, answer, inputAnswer, changeAnswer, inputChangeAnswer) {
+function sendAnswer(answers, answer, inputChangeAnswer, changeSendAnswers) {
   
   return (
     <>
       <div className={classes.form__quiz__question}><span>Куда прислать вам ответ?</span></div>
 
       <div className={classes.form__quiz__sendAnswer}>
-        {answers.map(item => <AnswerItem title={item.title} isActive={answer.title === item.title} changeAnswer={changeAnswer} key={item.id}/> )}
+        {answers.map(item => <AnswerItem title={item.title} isActive={answer.title === item.title} changeAnswer={changeSendAnswers} key={item.id}/> )}
       </div>
 
       <div className={classes.inputMask}>
         <p className={classes.inputMask__text}>Ввведите ваш {answer.type === 'phone' ? 'номер телефона' : 'e-mail'}</p>
-        {answer.type === 'phone' ? <InputMask inputChangeAnswer={inputChangeAnswer} /> : <input type="text" className={classes.inputMask__input} placeholder="simple@example.com"/>}
+        {answer.type === 'phone' ? <InputMask inputChangeAnswer={inputChangeAnswer} /> : <input type="text" onChange={(event) => inputChangeAnswer(event.target.value)} className={classes.inputMask__input} placeholder="simple@example.com"/>}
       </div>
     </>
   )
@@ -70,7 +92,12 @@ function sendAnswer(answers, answer, inputAnswer, changeAnswer, inputChangeAnswe
 
 function quizAnswer(answers, placeholder, activeQuiz, answer, changeAnswer) {
   if(answers === undefined) {
-    return <input className={classes.form__quiz__input} value={answer} onChange={(e) => changeAnswer(e.target.value)} placeholder={placeholder} type="number"/>
+    return <input 
+              className={classes.form__quiz__input} 
+              value={answer} 
+              onChange={(e) => changeAnswer(e.target.value)} 
+              placeholder={placeholder} 
+              type="number"/>
   }
 
   return (
