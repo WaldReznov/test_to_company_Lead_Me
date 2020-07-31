@@ -1,0 +1,53 @@
+.progress {
+  display: flex;
+  flex-grow: 1;
+}
+
+.progress__circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: inset 0px 10px 20px rgba(255, 255, 255, 0.16);
+
+
+  &__unActive {
+    background: linear-gradient(0deg, #FFFFFF, #FFFFFF);
+    border: 3px solid #F5F5F5;
+  }
+
+  &__active {
+    background: linear-gradient(0deg, #50B520, #50B520);
+  }
+}
+
+.circle__background {
+  display: flex;
+  position: relative;
+  z-index: 6;
+}
+
+.progress__div {
+  height: 16px;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  margin: 0 -5px;
+  border: 0.5px solid rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0px 10px 20px rgba(255, 255, 255, 0.16);
+
+  &__active {
+    width: 100%;
+    height: 10px;
+    background: linear-gradient(0deg, rgba(80, 181, 32, 0.31), rgba(80, 181, 32, 0.31));
+    box-shadow: inset 0px 10px 20px rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+  }
+
+  &__unActive {
+    width: 100%;
+    height: 10px;
+    background: #F4F4F4;
+    box-shadow: inset 0px 10px 20px rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+  }
+}
